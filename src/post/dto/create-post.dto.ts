@@ -10,7 +10,7 @@ export class CreatePostDto {
     // @IsNotEmpty()
     description:string
 
-    @IsString()
+    @IsNumber()
     createdat:string
 
     @IsString()  
@@ -20,6 +20,6 @@ export class CreatePostDto {
     deletedat:string
 
     @IsNumber()
-    id:number
+    Postid:number
 
 }

@@ -19,11 +19,11 @@ export class PostService {
     const post:Post=new Post();
     post.title=createPostDto.title
     post.description=createPostDto.description
-    // post.createdat=(Date.now()).toString(); 
-    // post.updatedat=""
-    // post.deletedat=""
+    post.createdat=(Date.now()).toString()
+    post.updatedat=""
+    post.deletedat=""
     // post.user=createPostDto.id
-    post.Postid=createPostDto.id
+    post.Postid=createPostDto.Postid
     return this.postRepository.save(post)
 
   }
@@ -31,6 +31,19 @@ export class PostService {
   findAll(){
     return this.postRepository.find();
   }
+  findByPostID(postid:number){
+    return this.postRepository.find({where:{Postid:postid}})
+  }
+  deletePostByPostid(postid:number){
+    return this.postRepository.delete({Postid:postid})
+  }
+
+  updatePost(id:number,updatePostDto:UpdatePostDto){
+    const value=this.postRepository.update({id},{...updatePostDto})
+    return {message:"post updated successfully"}
+  }
+
+  
 
   // findById(id:number){
   //   return this.postRepository.findOne()

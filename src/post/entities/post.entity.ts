@@ -14,7 +14,7 @@ export class Post {
 
 
     @Column( {nullable: true})
-    createdat: string 
+    createdat: string
 
     @Column({ type: 'varchar', length: 4 ,nullable:true})
     updatedat: string

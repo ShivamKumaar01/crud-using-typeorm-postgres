@@ -17,7 +17,7 @@ import { Post } from './post/entities/post.entity';
       entities: [User,Post],
       database: 'pgWithNest',
       synchronize: true,//Indicates if database schema should be auto created on every application launch.
-      logging: true,  //it shows query in console
+      logging: false,  //it shows query in console
     }),
     UserModule,
     PostModule,],
