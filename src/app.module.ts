@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { PostModule } from './post/post.module';
+import { Post } from './post/entities/post.entity';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -12,12 +14,13 @@ import { User } from './user/entities/user.entity';
       port: 5432,
       password: 'admin',
       username: 'postgres',
-      entities: [User],
+      entities: [User,Post],
       database: 'pgWithNest',
       synchronize: true,//Indicates if database schema should be auto created on every application launch.
       logging: true,  //it shows query in console
     }),
-    UserModule,],
+    UserModule,
+    PostModule,],
   controllers: [AppController],
   providers: [AppService],
 })
