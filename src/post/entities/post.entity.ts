@@ -1,5 +1,5 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Post {
@@ -12,21 +12,15 @@ export class Post {
     @Column({ type: 'varchar', length: 400 })
     description: string;
 
+    @ManyToOne(() => User, (user) => user.id)
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+    user: User
 
-    @Column( {nullable: true})
-    createdat: string
 
-    @Column({ type: 'varchar', length: 4 ,nullable:true})
-    updatedat: string
+    
 
-    @Column({ type: 'varchar', length: 4,nullable:true })
-    deletedat: string
-
-    @ManyToOne(()=>User,(user)=>user.id)
-    user:User
-
-    @Column()
-    Postid:number 
+    @Column({nullable: true})
+    user_id:number 
 
     // @Column({ type: 'int' })
     // age: number;

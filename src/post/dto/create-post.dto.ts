@@ -6,6 +6,7 @@ export class CreatePostDto {
     
     @MinLength(3, { message: 'title must have atleast 2 characters.' })
     title:string
+    
     @IsString()
     // @IsNotEmpty()
     description:string
@@ -20,6 +21,9 @@ export class CreatePostDto {
     deletedat:string
 
     @IsNumber()
-    Postid:number
+    userid:number
+
+    // @IsNumber()
+    // Postid:number
 
 }

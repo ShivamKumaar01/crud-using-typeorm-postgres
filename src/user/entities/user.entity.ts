@@ -1,5 +1,7 @@
+import { Group } from 'src/group/entities/group.entity';
 import { Post } from 'src/post/entities/post.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Profile } from 'src/profile/entities/profile.entity';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -32,7 +34,27 @@ export class User {
    */
   gender: string;
 
-  @OneToMany(()=>Post,(post)=>post.user)  
-  post:Post[]
+  @OneToMany(() => Post, (post) => post.user)
+  post: Post[]
+
+
+  @ManyToMany(() => Group, group => group.id)
+  @JoinTable({
+    name: "user_group",
+    joinColumn: {
+      name: "user_id",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: 'group_id',
+      referencedColumnName: 'id'
+    },
+  })
+  groups: Group[]
+
+
+  @OneToOne(() => Profile)
+  @JoinColumn()
+  profile: Profile
 
 }

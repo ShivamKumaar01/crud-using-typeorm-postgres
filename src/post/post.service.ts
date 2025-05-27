@@ -1,49 +1,77 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Repository } from 'typeorm';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class PostService {
 
-   constructor(
-      @InjectRepository(Post) private readonly postRepository: Repository<Post>,
-    ) {}
-  // create(createPostDto: CreatePostDto) {
-  //   return 'This action adds a new post';
-  // }
-  create(createPostDto:CreatePostDto){
-    console.log(createPostDto,"this is from service"); 
-    const post:Post=new Post();
-    post.title=createPostDto.title
-    post.description=createPostDto.description
-    post.createdat=(Date.now()).toString()
-    post.updatedat=""
-    post.deletedat=""
-    // post.user=createPostDto.id
-    post.Postid=createPostDto.Postid
+  constructor(
+    @InjectRepository(Post) private readonly postRepository: Repository<Post>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) { }
+
+  async create(createPostDto: CreatePostDto) {
+
+    const { title, description } = createPostDto;
+
+    const user = await this.userRepository.findOneBy({ id: createPostDto.userid })
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    const post: Post = new Post();
+
+    post.title = title
+    post.description = description
+    post.user = user
+
     return this.postRepository.save(post)
 
   }
 
-  findAll(){
+  findAll() {
     return this.postRepository.find();
   }
-  findByPostID(postid:number){
-    return this.postRepository.find({where:{Postid:postid}})
-  }
-  deletePostByPostid(postid:number){
-    return this.postRepository.delete({Postid:postid})
+  // findByUserID(userid:number){
+  //   return this.postRepository.find({where:{userid:userid}})
+  // }
+
+  deletePostByPostid(id: number) {
+    return this.postRepository.delete({ id: id })
   }
 
-  updatePost(id:number,updatePostDto:UpdatePostDto){
-    const value=this.postRepository.update({id},{...updatePostDto})
-    return {message:"post updated successfully"}
+  updatePost(id: number, updatePostDto: UpdatePostDto) {
+    updatePostDto.updatedat = (Date.now()).toString()
+    const value = this.postRepository.update({ id }, { ...updatePostDto })
+    return { message: "post updated successfully" }
   }
 
-  
+
+  findByUserid(id: number) {
+    return this.postRepository.find({
+      where: {
+       user_id : id,
+
+      },
+    })
+  }
+
+  async findbyquery(page=1,limit=10){
+    const offset=(page-1)*limit;
+    return this.postRepository.find({
+      skip:offset,
+      take:limit,
+    })
+
+  }
+
+
 
   // findById(id:number){
   //   return this.postRepository.findOne()
