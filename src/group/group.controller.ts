@@ -32,4 +32,10 @@ export class GroupController {
   remove(@Param('id') id: string) {
     return this.groupService.remove(+id);
   }
+    @Get(':id/users')
+  async getGroupUsers(@Param('id') id: number) {
+    const group = await this.groupService.getGroupWithUsers(id);
+    if (!group) return { message: 'Group not found' };
+    return group.users;
+  }
 }

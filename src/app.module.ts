@@ -21,7 +21,7 @@ import { user_group } from './user-group/entities/user-group.entity';
       port: 5432,
       password: 'admin',
       username: 'postgres',
-      entities: [User,Post,Profile,Group,user_group],
+      entities: [User,Post,Profile,Group],
       database: 'pgWithNest',
       synchronize: true,//Indicates if database schema should be auto created on every application launch.
       logging: false,  //it shows query in console

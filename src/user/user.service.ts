@@ -24,12 +24,13 @@
 //     return `This action removes a #${id} user`;
 //   }
 // }
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { Group } from 'src/group/entities/group.entity';
 
 @Injectable()
 export class UserService {
@@ -39,6 +40,7 @@ export class UserService {
    */
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+     @InjectRepository(Group) private groupRepository: Repository<Group>,
   ) {}
 
   /**
@@ -114,4 +116,23 @@ export class UserService {
   removeUser(id: number) {
     return this.userRepository.delete(id);
   }
+async addUserToGroup(userId: number, groupId: number): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['groups'],
+    });
+    if (!user) throw new Error('User not found');
+
+    // Push group with only id (to avoid loading full entity)
+    user.groups.push({ id: groupId } as any);
+    await this.userRepository.save(user);
+  }
+
+async getUserWithGroups(userId: number) {
+  return this.userRepository.findOne({
+    where: { id: userId },
+    relations: ['groups'],
+  });
+}
+
 }

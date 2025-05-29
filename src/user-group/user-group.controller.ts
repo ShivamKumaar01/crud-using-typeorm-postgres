@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { UserGroupService } from './user-group.service';
 import { CreateUserGroupDto } from './dto/create-user-group.dto';
 import { UpdateUserGroupDto } from './dto/update-user-group.dto';
@@ -31,4 +31,14 @@ export class UserGroupController {
   remove(@Param('id') id: string) {
     return this.userGroupService.remove(+id);
   }
+//   @Get(':userId/groups')
+// async getUserWithGroups(@Param('userId') userId: number) {
+//   const user = await this.userGroupService.getUserWithGroups(userId);
+
+//   if (!user) {
+//     throw new NotFoundException('User not found');
+//   }
+
+//   return user.groups;
+// }
 }

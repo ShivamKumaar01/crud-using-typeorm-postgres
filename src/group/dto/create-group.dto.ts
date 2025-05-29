@@ -13,14 +13,14 @@ export class CreateGroupDto {
 
     @IsString()
     admin: string
-    @IsDate()
-    created_at: Date
+    // @IsDate()
+    // created_at: Date
 
-    @IsDate()
-    updated_at: Date
+    // @IsDate()
+    // updated_at: Date
 
-    @IsDate()
-    deleted_at: Date
+    // @IsDate()
+    // deleted_at: Date
 
 
 

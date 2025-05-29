@@ -32,4 +32,17 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.removeUser(+id);
   }
+  @Get(':userId/groups')
+  @Get(':id/groups')
+  async getUserGroups(@Param('id') id: number) {
+    const user = await this.userService.getUserWithGroups(id);
+    if (!user) return { message: 'User not found' };
+    return user.groups;
+  }
+  
+  @Post(':userId/groups/:groupId')
+  async addUserToGroup(@Param('userId') userId: number, @Param('groupId') groupId: number) {
+    await this.userService.addUserToGroup(userId, groupId);
+    return { message: 'User added to group successfully' };
+  }
 }

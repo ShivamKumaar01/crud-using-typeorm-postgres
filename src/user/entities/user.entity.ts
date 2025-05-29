@@ -38,19 +38,34 @@ export class User {
   post: Post[]
 
 
-  @ManyToMany(() => Group, group => group.id)
-  @JoinTable({
-    name: "user_group",
-    joinColumn: {
-      name: "user_id",
-      referencedColumnName: "id"
-    },
-    inverseJoinColumn: {
-      name: 'group_id',
-      referencedColumnName: 'id'
-    },
-  })
-  groups: Group[]
+  // @ManyToMany(() => Group, group => group.id)
+  // @JoinTable({
+  //   name: "user_group",
+  //   joinColumn: {
+  //     name: "user_id",
+  //     referencedColumnName: "id"
+  //   },
+  //   inverseJoinColumn: {
+  //     name: 'group_id',
+  //     referencedColumnName: 'id'
+  //   },
+  // })
+  // groups: Group[]
+
+  @ManyToMany(() => Group, group => group.users)
+@JoinTable({
+  name: "user_group",
+  joinColumn: {
+    name: "user_id",
+    referencedColumnName: "id"
+  },
+  inverseJoinColumn: {
+    name: "group_id",
+    referencedColumnName: "id"
+  },
+})
+groups: Group[];
+
 
 
   @OneToOne(() => Profile)

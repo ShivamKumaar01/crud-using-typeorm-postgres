@@ -39,4 +39,10 @@ export class GroupService {
   remove(id: number) {
     return this.groupRepository.delete(id);
   }
+   async getGroupWithUsers(id: number): Promise<Group | null> {
+    return this.groupRepository.findOne({
+      where: { id },
+      relations: ['users'],
+    });
+  }
 }

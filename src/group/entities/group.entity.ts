@@ -25,6 +25,8 @@ export class Group {
     deleted_at: Date;
 
 
-    @ManyToMany(()=>User,user=>user.id)
-    user?:User[]
+    // @ManyToMany(()=>User,user=>user.id)
+    // user?:User[]
+    @ManyToMany(() => User, user => user.groups)
+    users: User[];
 }
