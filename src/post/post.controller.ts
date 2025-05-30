@@ -28,10 +28,10 @@ export class PostController {
     return this.postService.findByUserid(+id);
   }
 
-  // @Get(':id')
-  // findByPostId(@Param('id') id: string) {
-  //   return this.postService.findByPostID(+id);
-  // }
+  @Get(':id')
+  findByPostId(@Param('id') id: string) {
+    return this.postService.findByPostID(+id);
+  }
 
   @Put(':id')
   updatePost(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {

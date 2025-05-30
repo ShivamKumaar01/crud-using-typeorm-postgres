@@ -45,4 +45,8 @@ export class UserController {
     await this.userService.addUserToGroup(userId, groupId);
     return { message: 'User added to group successfully' };
   }
+  @Get('groups/:userid')
+  getGroup(@Param('userid') userid:number){
+    return this.userService.usersGroup(userid);
+  }
 }

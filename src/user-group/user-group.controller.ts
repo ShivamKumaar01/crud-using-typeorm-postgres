@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Inject } from '@nestjs/common';
 import { UserGroupService } from './user-group.service';
 import { CreateUserGroupDto } from './dto/create-user-group.dto';
 import { UpdateUserGroupDto } from './dto/update-user-group.dto';
+import { UserService } from 'src/user/user.service';
 
 @Controller('user-group')
 export class UserGroupController {
-  constructor(private readonly userGroupService: UserGroupService) {}
+  constructor( private readonly userGroupService: UserGroupService) {}
 
   @Post()
   create(@Body() createUserGroupDto: CreateUserGroupDto) {
@@ -17,10 +18,10 @@ export class UserGroupController {
     return this.userGroupService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userGroupService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.userGroupService.findOne(+id);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserGroupDto: UpdateUserGroupDto) {
@@ -31,6 +32,14 @@ export class UserGroupController {
   remove(@Param('id') id: string) {
     return this.userGroupService.remove(+id);
   }
+
+  @Get(':id')
+  getByGroupId(@Param('id') id:string){
+    return this.userGroupService.getbygroupid(+id)
+  }
+
+
+ 
 //   @Get(':userId/groups')
 // async getUserWithGroups(@Param('userId') userId: number) {
 //   const user = await this.userGroupService.getUserWithGroups(userId);

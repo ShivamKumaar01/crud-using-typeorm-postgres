@@ -40,8 +40,9 @@ export class UserService {
    */
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-     @InjectRepository(Group) private groupRepository: Repository<Group>,
-  ) {}
+    @InjectRepository(Group) private groupRepository: Repository<Group>,
+    // @InjectRepository(UserGroup) private groupRepository: Repository<Group>,
+  ) { }
 
   /**
    * this is function is used to create User in User Entity.
@@ -73,7 +74,7 @@ export class UserService {
    * @param id is type of number, which represent the id of user.
    * @returns promise of user
    */
-  viewUser(id: number){
+  viewUser(id: number) {
     return this.userRepository.findOneBy({ id });
   }
 
@@ -84,20 +85,20 @@ export class UserService {
    * @param updateUserDto this is partial type of createUserDto.
    * @returns promise of udpate user
    */
-   async updateUser(id: number, updateUserDto: UpdateUserDto){
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
     // const user: User = new User();
     // console.log(user);
-  //   console.log(updateUserDto,"this is from service");
-  //  const data=await this.userRepository.findOne({
-  //   where:{id:id}
-  //  })
-   const value=this.userRepository.update({id}, {...updateUserDto})
-   return {message:"user updated successfully"}
-  //  return this.userRepository.save({value});
+    //   console.log(updateUserDto,"this is from service");
+    //  const data=await this.userRepository.findOne({
+    //   where:{id:id}
+    //  })
+    const value = this.userRepository.update({ id }, { ...updateUserDto })
+    return { message: "user updated successfully" }
+    //  return this.userRepository.save({value});
 
-  //  console.log(data);
+    //  console.log(data);
 
-    
+
     // return {message:"updated successfully"}
     // user.name = updateUserDto.name;
     // user.age = updateUserDto.age;
@@ -116,23 +117,29 @@ export class UserService {
   removeUser(id: number) {
     return this.userRepository.delete(id);
   }
-async addUserToGroup(userId: number, groupId: number): Promise<void> {
+  async addUserToGroup(userId: number, groupId: number): Promise<void> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: ['groups'],
     });
     if (!user) throw new Error('User not found');
 
-    // Push group with only id (to avoid loading full entity)
+
     user.groups.push({ id: groupId } as any);
     await this.userRepository.save(user);
   }
 
-async getUserWithGroups(userId: number) {
-  return this.userRepository.findOne({
-    where: { id: userId },
-    relations: ['groups'],
-  });
-}
+  async getUserWithGroups(userId: number) {
+    return this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['groups'],
+    });
+  }
+  usersGroup(id:number){
+    const data=this.userRepository.find({where:{id:id},relations:["groups"]})
+    return data;
+    
+
+  }
 
 }

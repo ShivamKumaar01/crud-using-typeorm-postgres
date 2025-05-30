@@ -4,11 +4,13 @@ import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
 import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class GroupService {
 
-  constructor(@InjectRepository(Group) private readonly groupRepository: Repository<Group>) { }
+  constructor(@InjectRepository(Group) private readonly groupRepository: Repository<Group>,
+@InjectRepository(User) private readonly userRepository: Repository<User>) { }
   // @InjectRepository(User)){}
 
   // create(createGroupDto: CreateGroupDto) {
@@ -36,7 +38,10 @@ export class GroupService {
   //   return this.groupRepository.update({id},{...updateGroupDto});
   // }
 
-  remove(id: number) {
+  async remove(id: number) {
+    // const data=await this.userRepository.find({where:{id:id},relations:['groups']})
+    // const value=data.groups.find()
+    // return data;
     return this.groupRepository.delete(id);
   }
    async getGroupWithUsers(id: number): Promise<Group | null> {

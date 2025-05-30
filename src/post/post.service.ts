@@ -70,6 +70,9 @@ export class PostService {
     })
 
   }
+  findByPostID(id:number){
+    return this.postRepository.find({where:{id:id}})
+  }
 
 
 
